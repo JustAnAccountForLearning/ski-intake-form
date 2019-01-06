@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+    <form action="/contactinfo" method="GET">
+        <button type="submit" class="btn btn-primary btn-lg" style="display: block; margin: 0 auto;"> New Customer </button>
+    </form>
+    &nbsp;
+    <div style="text-align: center;">Return Customer route currently in development.</div>
+    <form action="/findcustomer" method="GET">
+        <button type="submit" class="btn btn-primary btn-lg" style="display: block; margin: 0 auto;"> Return Customer </button>
+    </form>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Skier Information
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='skierinfo.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <form action="/skierinfo" name="skierinfo" id="skierinfo" onsubmit="{{ url_for('static', filename='skierinfo.js') }}" method="POST">
+        <div style="display: none;" id="alert" class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>field</strong><br> Complete and try submitting again.
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-auto">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Weight:">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="weight" name="weight" autofocus autocomplete="off" maxlength="3" placeholder="Weight in lbs.">
+                                <span class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">lbs.</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Height:">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="foot" name="foot" autocomplete="off" maxlength="1" placeholder="Feet">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">ft.</span>
+                                </div>
+                                <input type="text" class="form-control" id="inches" name="inches" autocomplete="off" maxlength="2" placeholder="Inches">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">in.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Age:">
+                            <input type="text" class="form-control" id="age" name="age" autocomplete="off" maxlength="3" placeholder="Age">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Skier Type:">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-outline-primary btn-lg">
+                                    <input type="radio" id="type0" name="type" tabindex="-1" value="0" autocomplete="off"> -1
+                                </label>
+                                <label class="btn btn-primary btn-lg">
+                                    <input type="radio" id="type1" name="type" tabindex="-1" value="1" autocomplete="off" checked=""> 1
+                                </label>
+                                <label class="btn btn-primary btn-lg">
+                                    <input type="radio" id="type2" name="type" tabindex="-1" value="2" autocomplete="off"> 2
+                                </label>
+                                <label class="btn btn-primary btn-lg">
+                                    <input type="radio" id="type3" name="type" tabindex="-1" value="3" autocomplete="off"> 3
+                                </label>
+                                <label class="btn btn-outline-primary btn-lg">
+                                    <input type="radio" id="type4" name="type" tabindex="-1" value="4" autocomplete="off"> 3+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <img id="myImg" src="https://www.usafasupport.com/images/outdoor/rec/skier-type.jpg" alt="Skier Type" style="width:100%;max-width:200px">
+                &nbsp;
+                <div align="center">
+                    <label for="myImg">Click to enlarge.</label>
+                </div>
+                <!-- The Modal - copied from online resource -->
+                <div id="myModal" class="modal">
+                  <span class="close">&times;</span>
+                  <img class="modal-content" id="img01">
+                  <div id="caption"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary" style="display: block; margin: 0 auto;"> Next </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

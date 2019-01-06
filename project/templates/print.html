@@ -1,0 +1,28 @@
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="/static/styles.css" rel="stylesheet"/>
+    <title>Print</title>
+</head>
+
+<body>
+    <div style="background-color: rgb(175,238,238)" align="center">
+        <div id="printpage">
+            {{ equipmentinfo["initials"] }} <br>
+            &nbsp;
+            &nbsp;
+            {{ contactinfo["first"] }} &nbsp; {{ contactinfo["last"] }} &nbsp; &nbsp; {{ contactinfo["phone"] }} <br>
+            {{ contactinfo["address1] }} <br>
+            {{ contactinfo["address2"] }} <br>
+            {{ contactinfo["city"] }} &nbsp; {{ contactinfo["state"] }} &nbsp; {{ contactinfo["postal"] }} <br>
+            {{ contactinfo["email"] }} <br>
+            {{ skierinfo["weight"] }} &emsp; {{ skierinfo["height"] }} &emsp; {{ skierinfo["age"] }} &emsp; {{ skierinfo["skiertype"] }} <br>
+
+            {{ equipmentinfo["solelength"] }} &emsp; {{ skierinfo["skiercode"] }} &emsp; {{ initialindicator }} <br>
+            &nbsp;
+            &nbsp;
+
+
+        </div>
+    </div>
+</body>

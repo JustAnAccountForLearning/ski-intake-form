@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='equipment.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+    Equipment Information
+{% endblock %}
+
+{% block main %}
+    <div class="container-fluid">
+        <form action="/print" onsubmit="{{ url_for('static', filename='equipment.js') }}" id="equipmentform" method="POST">
+            <div style="display: none;" id="alert" class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>field</strong><br> Complete form and try submitting again.
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="input-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Ski Make:">
+                            <input type="text" class="form-control" autofocus autocomplete="off" id="skimake" name="skimake" placeholder="Make">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Ski Model:">
+                            <input type="text" class="form-control" autocomplete="off" id="skimodel" name="skimodel" placeholder="Model"><br>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Ski Length:">
+                            <input type="text" class="form-control" autocomplete="off" id="skilength" name="skilength" placeholder="Length"><br>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Binding Make:">
+                            <input type="text" class="form-control" autocomplete="off" id="bindmake" name="bindmake" placeholder="Make">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Binding Model:">
+                            <input type="text" class="form-control" autocomplete="off" id="bindmodel" name="bindmodel" placeholder="Model"><br>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Boot Make:">
+                            <input type="text" class="form-control" autocomplete="off" id="bootmake" name="bootmake" placeholder="Make">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Boot Model:">
+                            <input type="text" class="form-control" autocomplete="off" id="bootmodel" name="bootmodel" placeholder="Model"><br>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Boot Color:">
+                            <input type="text" class="form-control" autocomplete="off" id="bootcolor" name="bootcolor" placeholder="Color"><br>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Boot Sole Length (mm):">
+                            <input type="text" class="form-control" autocomplete="off" id="solelength" name="solelength" placeholder="Sole Length">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Mounting Location:">
+                            <input type="text" class="form-control" autocomplete="off" id="mountloc" name="mountloc" placeholder="Mounting Location"><br>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Notes:">
+                            <input type="text" class="form-control" autocomplete="off" id="notes" name="notes" placeholder="Optional">
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+                <input type="text" readonly tabindex="-1" id="initials" name="initials" style="display:none;" value="{{ initials }}">
+            </div>
+            <button type="submit" class="btn btn-primary" style="display: block; margin: 0 auto;">Next</button>
+        </form>
+    </div>
+{% endblock %}

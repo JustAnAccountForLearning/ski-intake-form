@@ -1,0 +1,161 @@
+{% extends "layout.html" %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='verify.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+    Verification
+{% endblock %}
+
+{% block main %}
+<h4>Please review all of the following information. Make changes if required.</h4>
+&nbsp;
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <legend>Contact Information:</legend>
+            <table class="table" id="contacttable"style="display:;">
+                <tr>
+                    <th>Name:</th>
+                    <td><span id="first">{{ customer["first"] }}</span>&nbsp;<span id="last">{{ customer["last"] }}</span></td>
+                </tr>
+                <tr>
+                    <th>Phone:</th>
+                    <td><span id="phone">{{ customer["phone"] }}</span></td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td><span id="email">{{ customer["email"] }}</span></td>
+                </tr>
+                <tr>
+                    <th>Street Address:</th>
+                    <td><span id="address1">{{ customer["address1"] }}</span></td>
+                </tr>
+                <tr>
+                    <th>Optional:</th>
+                    <td><span id="address2">{{ customer["address2"] }}</span></td>
+                </tr>
+                <tr>
+                    <th>City, State, Postal:</th>
+                    <td><span id="city">{{ customer["city"] }}</span>,&nbsp;
+                    <span id="state">{{ customer["state"] }}</span>&nbsp;&nbsp;
+                    <span id="postal">{{ customer["postal"] }}</span></td>
+                </tr>
+            </table>
+
+            <table class="table" id="newcontacttable" style="display: none;">
+                <tr>
+                    <th>Name:</th>
+                    <td><input class="text" style="visibility: hidden;" id="newfirst" value='{{ customer["first"] }}' placeholder="Enter First Name">&nbsp;
+                    <input class="text" style="visibility: hidden;" id="newlast" value='{{ customer["last"] }}' placeholder="Enter Last Name"></td>
+                </tr>
+                <tr>
+                    <th>Phone:</th>
+                    <td><input class="text" style="visibility: hidden;" id="newphone" value='{{ customer["phone"] }}' placeholder="Enter Phone"></td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td><input class="text" style="visibility: hidden;" id="newemail" value='{{ customer["email"] }}' placeholder="Enter Email"></td>
+                </tr>
+                <tr>
+                    <th>Street Address:</th>
+                    <td><input class="text" style="visibility: hidden;" id="newaddress1" value='{{ customer["address1"] }}' placeholder="Enter Street Address"></td>
+                </tr>
+                <tr>
+                    <th>Optional:</th>
+                    <td><input class="text" style="visibility: hidden;" id="newaddress2" value='{{ customer["address2"] }}' placeholder="(optional)"></td>
+                </tr>
+                <tr>
+                    <th>City, State, Postal:</th>
+                    <td><input class="text" style="visibility: hidden;" id="newcity" value='{{ customer["city"] }}' placeholder="Enter City">&nbsp;
+                    <input class="text" style="visibility: hidden;" id="newstate" value='{{ customer["state"] }}' placeholder="Enter State">&nbsp;
+                    <input class="text" style="visibility: hidden;" id="newpostal" value='{{ customer["postal"] }}' placeholder="Enter Postal Code"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="form-group" align="center">
+        <button class="btn btn-sm btn-primary-outline" id="changecontactinfo" style="display: block;">Update Contact Information</button>
+        <button type="button" class="btn btn-sm btn-primary-outline" id="submitcontactchanges" style="display: none;">Submit Changes</button>
+    </div>
+
+    &nbsp;
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <legend>Skier Information</legend>
+            <table class="table" id="skiertable" style="display:;">
+                <tbody>
+                    <tr>
+                        <th>Weight:</th>
+                        <td><span id="weight">{{ skierinfo["weight"] }}</span> lbs</td>
+                    </tr>
+                    <tr>
+                        <th>Height:</th>
+                        <td><span id="foot">{{ skierinfo["foot"] }}</span>',&nbsp;<span id="inches">{{ skierinfo["inches"] }}</span>"</td>
+                    </tr>
+                    <tr>
+                        <th>Age:</th>
+                        <td><span id="age">{{ skierinfo["age"] }}</span><td>
+                    </tr>
+                    <tr>
+                        <th>Skier Type:</th>
+                        <td><span id="skiertype">{{ skierinfo["skiertype"] }}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table" id="newskiertable" style="display: none;">
+                <tbody>
+                    <tr>
+                        <th>Weight:</th>
+                        <td><input class="text" style="visibility: hidden;" id="newweight" value='{{ skierinfo["weight"] }}' placeholder="Enter weight"> lbs</td>
+                    </tr>
+                    <tr>
+                        <th>Height:</th>
+                        <td><input class="text" style="visibility: hidden;" id="newfoot" value='{{ skierinfo["foot"] }}' placeholder="Foot"> foot,&nbsp;
+                        <input class="text" style="visibility: hidden;" id="newinches" value='{{ skierinfo["inches"] }}' placeholder="Inches"> inches</td>
+                    </tr>
+                    <tr>
+                        <th>Age:</th>
+                        <td><input class="text" style="visibility: hidden;" id="newage" value='{{ skierinfo["age"] }}' placeholder="Enter age"><td>
+                    </tr>
+                    <tr>
+                        <th>Skier Type:</th>
+                        <td>
+                            <select style="visibility: hidden;" id="newskiertype" value='{{ skierinfo["skiertype"] }}' placeholder="Skier type">
+                                <option value="0"> -1 </option>
+                                <option value="1"> 1 </option>
+                                <option value="2"> 2 </option>
+                                <option value="3"> 3 </option>
+                                <option value="4"> 3+ </option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="form-group" align="center">
+        <button class="btn btn-sm btn-primary-outline" id="changeskierstats" style="display: block;">Update Skier Information</button>
+        <button type="button" class="btn btn-sm btn-primary-outline" id="submitskierchanges" style="display: none;">Submit Changes</button>
+    </div>
+</div>
+
+&nbsp;
+<div align="center">
+    <input type="checkbox" id="check" name="check">
+    <label for="check">I have read the above and it is true to the best of my knowledge:</label>
+    <div>
+        <button type="button" class="btn btn-primary btn-lg" id="newsubmitbutton" style="display: none; margin: 0 auto;">Submit Updated Information</button>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary btn-lg" id="informationverified" style="display: block; margin: 0 auto;">Submit</button>
+    </div>
+</div>
+{% endblock %}

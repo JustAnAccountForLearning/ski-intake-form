@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+# customer contact information intake form
+{% block title %}
+    Customer Contact Information
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='contactinfo.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="container-fluid">
+        <form action="/contactinfo" onsubmit="{{ url_for('static', filename='contactinfo.js') }}" id="contactinfo" method="POST">
+            <div style="display: none;" id="alert" class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>field</strong><br> Complete form and try submitting again.
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="input-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="First Name:">
+                            <input type="text" class="form-control" autofocus autocomplete="off" id="first" name="first" placeholder="First Name">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Last Name:">
+                            <input type="text" class="form-control" autocomplete="off" id="last" name="last" placeholder="Last Name"><br>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Phone Number:">
+                        <input type="text" class="form-control" autocomplete="off" name="phone" id="phone" placeholder="Phone Number"><br>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Email Address:">
+                        <input type="text" class="form-control" autocomplete="off" name="email" id="email" placeholder="Email Address"><br>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Street Address:">
+                        <input type="text" class="form-control" autocomplete="off" name="address1" id="address1" placeholder="Street Address"><br>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Address 2:">
+                        <input type="text" class="form-control" autocomplete="off" name="address2" id="address2" placeholder="Optional"><br>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="City:">
+                            <input type="text" class="form-control" autocomplete="off" name="city" id="city" placeholder="City">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="State:">
+                            <input type="text" class="form-control" autocomplete="off" name="state" id="state" placeholder="State">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Postal:">
+                            <input type="text" class="form-control" autocomplete="off" name="postal" id="postal" placeholder="Postal Code">
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="display: block; margin: 0 auto;">Next</button>
+        </form>
+    </div>
+{% endblock %}

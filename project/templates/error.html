@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block main %}
+<div class="alert alert-dismissible alert-danger">
+<button type="button" class="close" data-dismiss="alert">&times;</button>
+<h4 class="alert-heading">Sorry!</h4>
+<p class="mb-0">An error has occured: {{ error }}</p>
+</div>
+<div align="center">
+    <form action="/" method="GET">
+        <button type="submit" class="btn btn-lg btn-primary">Return to start</button>
+    </form>
+</div>
+{% endblock %}

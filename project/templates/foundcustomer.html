@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Customer Found
+{% endblock %}
+
+{% block main %}
+    {% if foundcustomer == None %}
+    <div align="center">
+        <h2>No matches found</h2>
+        <form action="/" method="POST">
+            <button type="submit" class="btn btn-primary">Return to start</button>
+        </form>
+    </div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</trh>
+                    <th>Phone Number</th>
+                    <th>Email Address</th>
+                    <th>Street Address</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for customer in foundcustomer %}
+            <tr>
+                <div class="container">
+                    <form action="/{{yespage}}" name="yesnobutton" method="POST">
+                                <td><input type="text" readonly tabindex="-1" class="form-control-plaintext" name="first" value="{{ customer['first'] }}"></td>
+                                <td><input type="text" readonly tabindex="-1" class="form-control-plaintext" name="last" value="{{ customer['last'] }}"></td>
+                                <td><input type="text" readonly tabindex="-1" class="form-control-plaintext" name="phone" value="{{ customer['phone'] }}"></td>
+                                <td><input type="text" readonly tabindex="-1" class="form-control-plaintext" name="email" value="{{ customer['email'] }}"></td>
+                                <td><input type="text" readonly tabindex="-1" class="form-control-plaintext" name="address1" value="{{ customer['address1'] }}"></td>
+                                <td><button type="submit" class="btn btn-primary btn-sm" id="yes" style="display: block; margin: 0 auto;">Select Customer</button></td>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <form action="/{{ nopage }}" name="yesnobutton" method="POST">
+        <input type="hidden" name="first" value="{{ newcustomer['first'] }}">
+        <input type="hidden" name="last" value="{{ newcustomer['last'] }}">
+        <input type="hidden" name="phone" value="{{ newcustomer['phone'] }}">
+        <input type="hidden" name="email" value="{{ newcustomer['email'] }}">
+        <input type="hidden" name="address1" value="{{ newcustomer['address1'] }}">
+        <input type="hidden" name="address2" value="{{ newcustomer['address2'] }}">
+        <input type="hidden" name="city" value="{{ newcustomer['city'] }}">
+        <input type="hidden" name="state" value="{{ newcustomer['state'] }}">
+        <input type="hidden" name="zip" value="{{ newcustomer['zip'] }}">
+        <button type="submit" class="btn btn-outline-primary" id="no" name="button" value="no" style="display: block; margin: 0 auto;">None of the above.</button>
+        </form>
+    {% endif %}
+
+
+
+
+{% endblock %}

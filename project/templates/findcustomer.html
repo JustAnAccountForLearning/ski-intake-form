@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='findcustomer.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+    Locate Customer Information
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <form action="/findcustomer" onsubmit="{{ url_for('static', filename='findcustomer.js') }}" id="searchform" method="POST">
+        <div style="display: none;" id="alert" class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>field</strong> Complete form and try submitting again.
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-auto">
+                    <h3>Please enter</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">
+                        <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="First Name">
+                        <input type="text" class="form-control" autofocus autocomplete="off" id="first" name="first" placeholder="First Name">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Last Name">
+                        <input type="text" class="form-control" autocomplete="off" id="last" name="last" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            &nbsp;
+            <div class="row">
+                <div class="input-group">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Phone Number:">
+                        <input type="text" class="form-control" autocomplete="off" name="phone" id="phone" placeholder="Phone Number">
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            &nbsp;
+            <div class="row">
+                <div class="input-group">
+                    <div class="col-3"></div>
+                    <div class="col-md-6">
+                        <input type="text" readonly tabindex="-1" class="form-control-plaintext" value="Email Address:">
+                        <input type="text" class="form-control" autocomplete="off" name="email" id="email" placeholder="Email Address"><br>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </div>
+        <div align="center">
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        let form = document.getElementById("validation");
+
+        form.onsubmit = function() {
+            if (!form.initials.value) {
+                return false;
+            }
+        };
+    });
+</script>
+{% endblock %}
+
+{% block title %}
+    Done
+{% endblock %}
+
+{% block main %}
+<div algin="center">
+    <h2 style="text-align:center">Thank you for completing the customer section.</h2>
+    <h3 style="text-align:center">Please hand the device over to the service writer.</h3>
+</div>
+&nbsp;
+<form action="/equipment" id="validation"method="POST">
+    <div align="center">
+        <label for="initials">Employee Initials</label>
+    </div>
+    <div class="row" align="center">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <input type="text" autofocus class="uppercase form-control" style="text-align:center;" maxlength="3" name="initials" id="initials">
+        </div>
+        <div class="col-md-5"></div>
+    </div>
+    &nbsp;
+    <div align="center">
+        <button type="submit">Next</button>
+    </div>
+</form>
+{% endblock %}
