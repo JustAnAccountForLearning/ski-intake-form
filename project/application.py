@@ -27,7 +27,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 
 # Configure SQLite database
-DATABASE = "/information.db"
+DATABASE = "/home/thomas/Documents/skiform/ski-intake-form/project/information.db"
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -106,19 +106,19 @@ def addcustomer(info=None):
         # Only add the customer if the "foundcustomer" is NOT the customer inputing new information
         if (request.form.get("button") is "no"):
             db.execute("INSERT INTO contactinfo (first, last, phone, email, address1, address2, city, state, postal) VALUES (:first, :last, :phone, :email, :address1, :address2, :city, :state, :postal)",
-                       first=info["first"], last=info["last"], phone=info["phone"], email=info["email"], address1=info["address1"], address2=info["address2"], city=info["city"], state=info["state"], postal=info["postal"])
+                       info).fetchall()
     else:
         db.execute("INSERT INTO contactinfo (first, last, phone, email, address1, address2, city, state, postal) VALUES (:first, :last, :phone, :email, :address1, :address2, :city, :state, :postal)",
-                       first=info["first"], last=info["last"], phone=info["phone"], email=info["email"], address1=info["address1"], address2=info["address2"], city=info["city"], state=info["state"], postal=info["postal"])
+                       info).fetchall()
 
 
     # Find the user in contactinfo.db for the given info
-    user = db.execute("SELECT * FROM contactinfo WHERE phone=:phone", phone=info.get("phone"))
+    user = db.execute("SELECT * FROM contactinfo WHERE phone=:phone", {"phone":info.get("phone")}).fetchall()
 
     # Remember which user is working
     try:
         session.clear()
-        session["user_id"] = id = user[0]["id"]
+        session["user_id"] = user[0]["id"]
     except:
         return render_template("error.html", error="User not added or found")
 
@@ -186,7 +186,7 @@ def skierinfo():
 
         # Add the given information and calculated skiercode to the skierinfo database
         db.execute("INSERT INTO skierinfo (id, weight, foot, inches, age, skiertype, skiercode) VALUES (:id, :weight, :foot, :inches, :age, :skiertype, :skiercode)",
-                   id=id, weight=weight, foot=foot, inches=inches, age=age, skiertype=skiertype, skiercode=skiercode)
+                   dict(id=id, weight=weight, foot=foot, inches=inches, age=age, skiertype=skiertype, skiercode=skiercode)).fetchall()
 
         # Prep info to pass into verify.html
         if skiertype is "0":
@@ -202,7 +202,7 @@ def skierinfo():
            "skiertype": skiertype
         }
 
-        customer = db.execute("SELECT * FROM contactinfo WHERE id=:id", id=id)
+        customer = db.execute("SELECT * FROM contactinfo WHERE id=:id", id=id).fetchall()
 
         return render_template("verify.html", customer=customer[0], skierinfo=skierinfo)
 
@@ -217,7 +217,7 @@ def verify():
     if request.method == "POST":
         db = get_db().cursor()
 
-        customer = db.execute("SELECT * FROM contactinfo WHERE id=:id", id=session["user_id"])
+        customer = db.execute("SELECT * FROM contactinfo WHERE id=:id", {id:session["user_id"]}).fetchall()
         skierinfo = request.form.to_dict()
 
         return render_template("verify.html", customer=customer[0], skierinfo=skierinfo)
@@ -282,16 +282,17 @@ def update():
 
         try:
             userid = session["user_id"]
+            customer['id'] = userid
         except:
             return render_template("error.html", error="Session has ended. Please start again.")
 
         # Store the updated info into customer info
         db.execute("UPDATE contactinfo SET first=:first, last=:last, phone=:phone, email=:email, address1=:address1, address2=:address2, city=:city, state=:state, postal=:postal WHERE id=:id",
-                       first=customer["first"], last=customer["last"], phone=customer["phone"], email=customer["email"], address1=customer["address1"], address2=customer["address2"], city=customer["city"], state=customer["state"], postal=customer["postal"], id=userid)
+                       customer).fetchall()
 
         # Store the updated info into skier info
         db.execute("UPDATE skierinfo SET id=:id, weight=:weight, foot=:foot, inches=:inches, age=:age, skiertype=:skiertype, skiercode=:skiercode",
-                   id=userid, weight=weight, foot=foot, inches=inches, age=age, skiertype=skiertype, skiercode=skiercode)
+                   dict(id=userid, weight=weight, foot=foot, inches=inches, age=age, skiertype=skiertype, skiercode=skiercode)).fetchall()
 
         # Prep info to pass into verify.html
         if skiertype is "0":
@@ -381,7 +382,7 @@ def print():
 
             # Store equipment information in the database
             db.execute("INSERT INTO equipmentinfo (userid, intials, skimake, skimodel, skilength, bindmake, bindmodel, bootmake, bootmodel, bootcolor, solelength, mountloc, notes) VALUES (:userid, :intials, :skimake, :skimodel, :skilength, :bindmake, :bindmodel, :bootmake, :bootmodel, :bootcolor, :solelength, :mountloc, :notes)",
-                       userid=userid, intials=initials, skimake=skimake, skimodel=skimodel, skilength=skilength, bindmake=bindmake, bindmodel=bindmodel, bootmake=bootmake, bootmodel=bootmodel, bootcolor=bootcolor, solelength=solelength, mountloc=mountloc, notes=notes)
+                       dict(userid=userid, intials=initials, skimake=skimake, skimodel=skimodel, skilength=skilength, bindmake=bindmake, bindmodel=bindmodel, bootmake=bootmake, bootmodel=bootmodel, bootcolor=bootcolor, solelength=solelength, mountloc=mountloc, notes=notes)).fetchall()
 
         except:
             return render_template("error.html", error="We're sorry. There was an error processing equipment information.")
@@ -389,14 +390,14 @@ def print():
 
         # Grab the customer info
         try:
-            contactinfo = db.execute("SELECT * FROM contactinfo WHERE id=:userid", userid=userid)
+            contactinfo = db.execute("SELECT * FROM contactinfo WHERE id=:userid", {userid:userid}).fetchall()
         except:
             return render_template("error.html", error="We're sorry. There was an error retrieving customer contact info.")
 
 
         # Grab the skier info
         try:
-            allskierinfo = db.execute("SELECT * FROM skierinfo WHERE id=:userid", userid=userid)
+            allskierinfo = db.execute("SELECT * FROM skierinfo WHERE id=:userid", {userid:userid}).fetchall()
             # Select only the most recent iteration
             skierinfo = allskierinfo[-1]
         except:

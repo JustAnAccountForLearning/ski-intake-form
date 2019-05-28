@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main %}
+
     {% if foundcustomer == None %}
     <div align="center">
         <h2>No matches found</h2>
@@ -34,8 +35,10 @@
                                 <td><input type="text" readonly tabindex="-1" class="form-control-plaintext" name="phone" value="{{ customer['phone'] }}"></td>
                                 <td><input type="text" readonly tabindex="-1" class="form-control-plaintext" name="email" value="{{ customer['email'] }}"></td>
                                 <td><input type="text" readonly tabindex="-1" class="form-control-plaintext" name="address1" value="{{ customer['address1'] }}"></td>
-                                <td><button type="submit" class="btn btn-primary btn-sm" id="yes" style="display: block; margin: 0 auto;">Select Customer</button></td>
-                            </div>
+                                {% if foundcustomer|length > 0 %}
+                                    <td><button type="submit" class="btn btn-primary btn-sm" id="yes" style="display: block; margin: 0 auto;">Select Customer</button></td>
+                                {% endif %}
+                                </div>
                         </div>
                     </form>
                 </div>
@@ -53,12 +56,10 @@
         <input type="hidden" name="address2" value="{{ newcustomer['address2'] }}">
         <input type="hidden" name="city" value="{{ newcustomer['city'] }}">
         <input type="hidden" name="state" value="{{ newcustomer['state'] }}">
-        <input type="hidden" name="zip" value="{{ newcustomer['zip'] }}">
+        <input type="hidden" name="zip" value="{{ newcustomer['postal'] }}">
         <button type="submit" class="btn btn-outline-primary" id="no" name="button" value="no" style="display: block; margin: 0 auto;">None of the above.</button>
         </form>
     {% endif %}
-
-
 
 
 {% endblock %}

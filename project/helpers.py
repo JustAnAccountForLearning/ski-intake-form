@@ -1,8 +1,9 @@
 import sqlite3
-
+import sys
+from flask import g
 
 # Configure SQLite database
-DATABASE = "/information.db"
+DATABASE = "/home/thomas/Documents/skiform/ski-intake-form/project/information.db"
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -77,9 +78,17 @@ def formatName(name):
 def customerExists(first, last, phone, email):
     """ Check the database for a pre-existing customer by first and last name, phone number, or email address """
     db = get_db().cursor()
+
+    values = db.execute("SELECT * FROM contactinfo WHERE (first=:first AND last=:last) OR phone=:phone OR email=:email",
+                          {"first":first, "last":last, "phone":phone, "email":email}).fetchall()
     
-    customer = db.execute("SELECT * FROM contactinfo WHERE (first=:first AND last=:last) OR phone=:phone OR email=:email",
-                          first=first, last=last, phone=phone, email=email)
+    customer = []
+    for i in range(len(values)):
+        customer.append(dict(zip(["id", "first", "last", "phone", "email", "address1", "address2", "city", "state", "postal"], values[i])))
+
+    print("INFO BELOW")
+    print(customer)
+    print(" ")
 
     if not customer:
         return None
