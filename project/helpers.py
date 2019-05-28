@@ -86,10 +86,6 @@ def customerExists(first, last, phone, email):
     for i in range(len(values)):
         customer.append(dict(zip(["id", "first", "last", "phone", "email", "address1", "address2", "city", "state", "postal"], values[i])))
 
-    print("INFO BELOW")
-    print(customer)
-    print(" ")
-
     if not customer:
         return None
     else:

@@ -9,6 +9,7 @@ from helpers import formatNumber, formatName, customerExists, skierCode, initial
 
 # Configure application
 app = Flask(__name__)
+app.secret_key = 'ZEPuPJWX7FogVeJqGoU4LfgDiSxlSkZQ' # Randomly generated key
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -99,22 +100,26 @@ def addcustomer(info=None):
     """ Correct customer has been found - add customer to database """
 
     db = get_db().cursor()
+
+    print(info) 
     # If info is not passed into addcustomer() as an argument, then it probably comes from a form
     if info is None:
         info = request.form.to_dict()
+        print(info)
 
-        # Only add the customer if the "foundcustomer" is NOT the customer inputing new information
-        if (request.form.get("button") is "no"):
-            db.execute("INSERT INTO contactinfo (first, last, phone, email, address1, address2, city, state, postal) VALUES (:first, :last, :phone, :email, :address1, :address2, :city, :state, :postal)",
-                       info).fetchall()
-    else:
-        db.execute("INSERT INTO contactinfo (first, last, phone, email, address1, address2, city, state, postal) VALUES (:first, :last, :phone, :email, :address1, :address2, :city, :state, :postal)",
-                       info).fetchall()
+    db.execute("INSERT INTO contactinfo (first, last, phone, email, address1, address2, city, state, postal) VALUES (:first, :last, :phone, :email, :address1, :address2, :city, :state, :postal)",
+                    info)
+    get_db().commit()
 
 
     # Find the user in contactinfo.db for the given info
-    user = db.execute("SELECT * FROM contactinfo WHERE phone=:phone", {"phone":info.get("phone")}).fetchall()
+    values = db.execute("SELECT * FROM contactinfo WHERE phone=:phone", {"phone":info.get("phone")}).fetchall()
 
+    user = []
+    for i in range(len(values)):
+        user.append(dict(zip(["id", "first", "last", "phone", "email", "address1", "address2", "city", "state", "postal"], values[i])))
+
+    print(user)
     # Remember which user is working
     try:
         session.clear()
@@ -186,7 +191,8 @@ def skierinfo():
 
         # Add the given information and calculated skiercode to the skierinfo database
         db.execute("INSERT INTO skierinfo (id, weight, foot, inches, age, skiertype, skiercode) VALUES (:id, :weight, :foot, :inches, :age, :skiertype, :skiercode)",
-                   dict(id=id, weight=weight, foot=foot, inches=inches, age=age, skiertype=skiertype, skiercode=skiercode)).fetchall()
+                   dict(id=id, weight=weight, foot=foot, inches=inches, age=age, skiertype=skiertype, skiercode=skiercode))
+        get_db().commit()
 
         # Prep info to pass into verify.html
         if skiertype is "0":
@@ -202,7 +208,9 @@ def skierinfo():
            "skiertype": skiertype
         }
 
-        customer = db.execute("SELECT * FROM contactinfo WHERE id=:id", id=id).fetchall()
+        values = db.execute("SELECT * FROM contactinfo WHERE id=:id", id=id).fetchall()
+
+        customer = (dict(zip(["id", "first", "last", "phone", "email", "address1", "address2", "city", "state", "postal"], values[0])))
 
         return render_template("verify.html", customer=customer[0], skierinfo=skierinfo)
 
@@ -217,7 +225,10 @@ def verify():
     if request.method == "POST":
         db = get_db().cursor()
 
-        customer = db.execute("SELECT * FROM contactinfo WHERE id=:id", {id:session["user_id"]}).fetchall()
+        values = db.execute("SELECT * FROM contactinfo WHERE id=:id", {id:session["user_id"]}).fetchall()
+
+        customer = (dict(zip(["id", "first", "last", "phone", "email", "address1", "address2", "city", "state", "postal"], values[0])))
+
         skierinfo = request.form.to_dict()
 
         return render_template("verify.html", customer=customer[0], skierinfo=skierinfo)
@@ -288,11 +299,13 @@ def update():
 
         # Store the updated info into customer info
         db.execute("UPDATE contactinfo SET first=:first, last=:last, phone=:phone, email=:email, address1=:address1, address2=:address2, city=:city, state=:state, postal=:postal WHERE id=:id",
-                       customer).fetchall()
+                       customer)
 
         # Store the updated info into skier info
         db.execute("UPDATE skierinfo SET id=:id, weight=:weight, foot=:foot, inches=:inches, age=:age, skiertype=:skiertype, skiercode=:skiercode",
-                   dict(id=userid, weight=weight, foot=foot, inches=inches, age=age, skiertype=skiertype, skiercode=skiercode)).fetchall()
+                   dict(id=userid, weight=weight, foot=foot, inches=inches, age=age, skiertype=skiertype, skiercode=skiercode))
+
+        get_db().commit()
 
         # Prep info to pass into verify.html
         if skiertype is "0":
@@ -334,13 +347,13 @@ def equipment():
         return render_template("equipment.html", initials = initials)
 
 
-@app.route("/print", methods=["GET", "POST"])
-def print():
+@app.route("/printticket", methods=["GET", "POST"])
+def printticket():
     """ Prepare to print out the final ticket with all information"""
 
     if request.method == "GET":
         #TODO: have it redirect to "/"
-        return render_template("print.html")
+        return render_template("printticket.html")
 
     if request.method == "POST":
         # Get the user id
@@ -382,7 +395,8 @@ def print():
 
             # Store equipment information in the database
             db.execute("INSERT INTO equipmentinfo (userid, intials, skimake, skimodel, skilength, bindmake, bindmodel, bootmake, bootmodel, bootcolor, solelength, mountloc, notes) VALUES (:userid, :intials, :skimake, :skimodel, :skilength, :bindmake, :bindmodel, :bootmake, :bootmodel, :bootcolor, :solelength, :mountloc, :notes)",
-                       dict(userid=userid, intials=initials, skimake=skimake, skimodel=skimodel, skilength=skilength, bindmake=bindmake, bindmodel=bindmodel, bootmake=bootmake, bootmodel=bootmodel, bootcolor=bootcolor, solelength=solelength, mountloc=mountloc, notes=notes)).fetchall()
+                       dict(userid=userid, intials=initials, skimake=skimake, skimodel=skimodel, skilength=skilength, bindmake=bindmake, bindmodel=bindmodel, bootmake=bootmake, bootmodel=bootmodel, bootcolor=bootcolor, solelength=solelength, mountloc=mountloc, notes=notes))
+            get_db().commit()
 
         except:
             return render_template("error.html", error="We're sorry. There was an error processing equipment information.")
@@ -390,16 +404,19 @@ def print():
 
         # Grab the customer info
         try:
-            contactinfo = db.execute("SELECT * FROM contactinfo WHERE id=:userid", {userid:userid}).fetchall()
+            values = db.execute("SELECT * FROM contactinfo WHERE id=:userid", {userid:userid}).fetchall()
+
+            contactinfo = (dict(zip(["id", "first", "last", "phone", "email", "address1", "address2", "city", "state", "postal"], values[0])))
         except:
             return render_template("error.html", error="We're sorry. There was an error retrieving customer contact info.")
 
 
         # Grab the skier info
         try:
-            allskierinfo = db.execute("SELECT * FROM skierinfo WHERE id=:userid", {userid:userid}).fetchall()
-            # Select only the most recent iteration
-            skierinfo = allskierinfo[-1]
+            values = db.execute("SELECT * FROM skierinfo WHERE id=:userid", {userid:userid}).fetchall()
+            # Select only the most recent iteration by using [-1]
+            skierinfo = (dict(zip(["id", "first", "last", "phone", "email", "address1", "address2", "city", "state", "postal"], values[-1])))
+            
         except:
             return render_template("error.html", error="We're sorry. There was an error retrieving skier info.")
 
@@ -409,7 +426,7 @@ def print():
         except:
             return render_template("error.html", error="There was an error calculating the skier's initial indicator value.")
 
-        return render_template("print.html", contactinfo=contactinfo, skierinfo=skierinfo, equipmentinfo=equipmentinfo, initialindicator = indicator)
+        return render_template("printticket.html", contactinfo=contactinfo, skierinfo=skierinfo, equipmentinfo=equipmentinfo, initialindicator = indicator)
 
 
 @app.teardown_appcontext
