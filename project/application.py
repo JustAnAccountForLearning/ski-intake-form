@@ -1,8 +1,7 @@
 import os
+import sqlite3
 
-from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
-from flask_session import Session
+from flask import Flask, flash, redirect, render_template, request, session, g
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 
@@ -26,14 +25,15 @@ def after_request(response):
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
-# Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///information.db")
+# Configure SQLite database
+DATABASE = "/information.db"
 
-
-# Most of the above is simply copy-pasted from a previous CS50 assignment.
-# At the time of this message, I don't fully understand it all.
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -98,10 +98,10 @@ def contactinfo():
 def addcustomer(info=None):
     """ Correct customer has been found - add customer to database """
 
+    db = get_db().cursor()
     # If info is not passed into addcustomer() as an argument, then it probably comes from a form
     if info is None:
         info = request.form.to_dict()
-
 
         # Only add the customer if the "foundcustomer" is NOT the customer inputing new information
         if (request.form.get("button") is "no"):
@@ -165,6 +165,9 @@ def skierinfo():
             return render_template("error.html", error="Session has ended. Please start again.")
 
     if request.method == "POST":
+
+        db = get_db().cursor()
+
         weight = request.form.get("weight")
         foot = request.form.get("foot")
         inches = request.form.get("inches")
@@ -212,6 +215,8 @@ def verify():
         return redirect("/")
 
     if request.method == "POST":
+        db = get_db().cursor()
+
         customer = db.execute("SELECT * FROM contactinfo WHERE id=:id", id=session["user_id"])
         skierinfo = request.form.to_dict()
 
@@ -223,6 +228,9 @@ def update():
     """ Just a method to update the SQL databases if changes were made to verify """
 
     if request.method == "POST":
+
+        db = get_db().cursor()
+
         try:
             # Gather all the information from the form and add it to a dictionary
             first = formatName(request.form.get("first"))
@@ -401,3 +409,10 @@ def print():
             return render_template("error.html", error="There was an error calculating the skier's initial indicator value.")
 
         return render_template("print.html", contactinfo=contactinfo, skierinfo=skierinfo, equipmentinfo=equipmentinfo, initialindicator = indicator)
+
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()

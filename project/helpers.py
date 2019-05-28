@@ -1,6 +1,15 @@
-from cs50 import SQL
+import sqlite3
 
-db = SQL("sqlite:///information.db")
+
+# Configure SQLite database
+DATABASE = "/information.db"
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
+
 
 
 def formatNumber(string):
@@ -47,27 +56,28 @@ def formatName(name):
     # Strip all leading blank spaces from the beginning of the string
     name = name.lstrip()
 
-    spacesfound = False;
+    spacesfound = False
 
     # Remove unwated whitespace characters from the name
     for character in name:
         # Reset spaces found if new word as per title()
         if character.isupper():
-            spacesfound = False;
+            spacesfound = False
 
         # Eliminate more than one white space between words
         if character is " ":
             if spacesfound:
                 name = name.replace(character, "", 1)
             else:
-                spacesfound = True;
+                spacesfound = True
 
     return name
 
 
 def customerExists(first, last, phone, email):
     """ Check the database for a pre-existing customer by first and last name, phone number, or email address """
-
+    db = get_db().cursor()
+    
     customer = db.execute("SELECT * FROM contactinfo WHERE (first=:first AND last=:last) OR phone=:phone OR email=:email",
                           first=first, last=last, phone=phone, email=email)
 
@@ -84,7 +94,7 @@ def skierCode(weight, height, age, skiertype):
     codes = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P"]
 
     if (not weight) or (not height) or (not age) or (not skiertype):
-        return None;
+        return None
 
     # Convert the incomming strings to integers
     weight = int(weight)
