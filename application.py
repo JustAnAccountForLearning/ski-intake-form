@@ -8,14 +8,14 @@ from werkzeug.exceptions import default_exceptions
 from helpers import formatNumber, formatName, customerExists, skierCode, initialIndicator
 
 # Configure application
-app = Flask(__name__)
-app.secret_key = 'ZEPuPJWX7FogVeJqGoU4LfgDiSxlSkZQ' # Randomly generated key
+application = Flask(__name__)
+application.secret_key = 'ZEPuPJWX7FogVeJqGoU4LfgDiSxlSkZQ' # Randomly generated key
 
 # Ensure templates are auto-reloaded
-app.config["TEMPLATES_AUTO_RELOAD"] = True
+application.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Ensure responses aren't cached
-@app.after_request
+@application.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Expires"] = 0
@@ -23,9 +23,9 @@ def after_request(response):
     return response
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+application.config["SESSION_FILE_DIR"] = mkdtemp()
+application.config["SESSION_PERMANENT"] = False
+application.config["SESSION_TYPE"] = "filesystem"
 
 # Configure SQLite database
 DATABASE = "/home/thomas/Documents/skiform/ski-intake-form/project/information.db"
@@ -37,14 +37,15 @@ def get_db():
     return db
 
 
-@app.route("/", methods=["GET", "POST"])
+@application.route("/")
+@application.route('/index')
 def index():
     """ Start page """
 
     return render_template("index.html")
 
 
-@app.route("/contactinfo", methods=["GET", "POST"])
+@application.route("/contactinfo", methods=["GET", "POST"])
 def contactinfo():
     """ Gather the customer contact information """
 
@@ -95,7 +96,7 @@ def contactinfo():
             return addcustomer(info)
 
 
-@app.route("/addcustomer", methods=["GET", "POST"])
+@application.route("/addcustomer", methods=["GET", "POST"])
 def addcustomer(info=None):
     """ Correct customer has been found - add customer to database """
 
@@ -130,7 +131,7 @@ def addcustomer(info=None):
     return redirect("/skierinfo")
 
 
-@app.route("/findcustomer", methods=["GET", "POST"])
+@application.route("/findcustomer", methods=["GET", "POST"])
 def findcustomer():
     """ Search database to locate customer info """
     if request.method == "GET":
@@ -156,7 +157,7 @@ def findcustomer():
             return redirect("/")
 
 
-@app.route("/skierinfo", methods=["GET", "POST"])
+@application.route("/skierinfo", methods=["GET", "POST"])
 def skierinfo():
     """ Gather skier information in order to find binding settings """
 
@@ -215,7 +216,7 @@ def skierinfo():
         return render_template("verify.html", customer=customer[0], skierinfo=skierinfo)
 
 
-@app.route("/verify", methods=["GET", "POST"])
+@application.route("/verify", methods=["GET", "POST"])
 def verify():
     """ Allow the customer to verify the previously provided information """
 
@@ -234,7 +235,7 @@ def verify():
         return render_template("verify.html", customer=customer[0], skierinfo=skierinfo)
 
 
-@app.route("/update", methods=["POST"])
+@application.route("/update", methods=["POST"])
 def update():
     """ Just a method to update the SQL databases if changes were made to verify """
 
@@ -324,7 +325,7 @@ def update():
         return render_template("verify.html", customer=customer, skierinfo=skierinfo)
 
 
-@app.route("/done", methods=["GET","POST"])
+@application.route("/done", methods=["GET","POST"])
 def done():
     """ Handover from customer to service writer """
 
@@ -335,7 +336,7 @@ def done():
         return render_template("done.html")
 
 
-@app.route("/equipment", methods=["GET", "POST"])
+@application.route("/equipment", methods=["GET", "POST"])
 def equipment():
     """ Gather information on skis, bindings, and boots """
 
@@ -347,7 +348,7 @@ def equipment():
         return render_template("equipment.html", initials = initials)
 
 
-@app.route("/printticket", methods=["GET", "POST"])
+@application.route("/printticket", methods=["GET", "POST"])
 def printticket():
     """ Prepare to print out the final ticket with all information"""
 
@@ -429,8 +430,13 @@ def printticket():
         return render_template("printticket.html", contactinfo=contactinfo, skierinfo=skierinfo, equipmentinfo=equipmentinfo, initialindicator = indicator)
 
 
-@app.teardown_appcontext
+@application.teardown_appcontext
 def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+
+if __name__ == '__main__':
+    application.debug = True
+    application.run()
