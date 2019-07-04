@@ -15,8 +15,6 @@ Requirements:
     Flask-Session
     Bootstrap
     Internet connection for images (will have static images soon)
-    CS50 library (need to eliminate this)
-    sqlite3
     python3
 
 
