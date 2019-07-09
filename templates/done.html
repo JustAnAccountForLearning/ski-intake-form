@@ -3,6 +3,9 @@
 {% block scripts %}
 <script type="text/javascript">
     $(document).ready(function() {
+        // Set current page to active in navbar
+        $("#finish").addClass("active");
+
         let form = document.getElementById("validation");
 
         form.onsubmit = function() {

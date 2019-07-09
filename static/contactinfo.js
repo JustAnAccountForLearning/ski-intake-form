@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    // Make current page active in navbar
+    $("#contact").addClass('active');
+
     let form = document.getElementById("contactinfo");
 
     let oldField = "field";

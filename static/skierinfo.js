@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    // Make current page active in navbar
+    $("#skierinfo").addClass('active');
+
     let form = document.getElementById("skierinfo");
     let oldField = "field";
 

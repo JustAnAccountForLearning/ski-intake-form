@@ -1,4 +1,8 @@
 $(document).ready(function() {
+
+    // Make current page active in navbar
+    $("#verify").addClass('active');
+
     let verifybutton = document.getElementById("informationverified");
     let newsubmitbutton = document.getElementById("newsubmitbutton");
     let contactchanges = document.getElementById("changecontactinfo");

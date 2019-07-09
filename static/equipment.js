@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    // Make current page active in navbar
+    $("#equipment").addClass('active');
+
     let form = document.getElementById("equipmentform");
 
     let oldField = "field";

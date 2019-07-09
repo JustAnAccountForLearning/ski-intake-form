@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+    // Make current page active in navbar
+    $("#contact").addClass('active');
+    
     let form = document.getElementById("searchform");
     let oldField = "field";
     let message = "No given information. ";

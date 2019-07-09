@@ -22,7 +22,35 @@
     </head>
 
     <body>
+        <!-- TODO: Navbar to show progress -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+            <a class="navbar-brand" href="">Intake Form</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav navbar-nav mr-auto">
+                    <li id="home" class="nav-item">
+                        <a class="nav-link" href="">Home</a>
+                    </li>
+                    <li id="contact" class="nav-item">
+                        <a class="nav-link" href="">Contact Info</a>
+                    </li>
+                    <li id="skierinfo" class="nav-item">
+                        <a class="nav-link" href="">Skier Info</a>
+                    </li>
+                    <li id="equipment" class="nav-item">
+                        <a class="nav-link" href="">Equipment</a>
+                    </li>
+                    <li id="verify" class="nav-item">
+                        <a class="nav-link" href="">Verification</a>
+                    </li>
+                    <li id="finish" class="nav-item">
+                        <a class="nav-link" href="">Finish</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
         <img src="https://www.mansfieldnordic.org/wp-content/uploads/2016/09/Skirack-Logo.jpg" alt="Skirack">
+        
         <main class="container p-5">
             {% block main %}{% endblock %}
         </main>
