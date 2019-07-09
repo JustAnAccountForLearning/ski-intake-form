@@ -25,6 +25,5 @@ Files included:
 Known issues:
     Findcustomer does not work if the name is not an EXACT match. Will need to filter inputs.
     There are extremely limited security checks server side.
-    Still attached to CS50 library. I'm hoping the only things I'm pulling are SQL and Flask from this.
     Code needs to be refactored. Especially the JavaScript files. Ran into issues with import/export and web security. Little over my head.
     Images should be static files instead of web urls and they should be our own content.
