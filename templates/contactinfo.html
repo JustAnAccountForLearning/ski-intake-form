@@ -6,7 +6,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src="{{ url_for('static', filename='contactinfo.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='contactinfo.js') }}"></script>
+    <!-- <script type="module" src="{{ url_for('static', filename='utilities.js') }}"></script> -->
 {% endblock %}
 
 {% block main %}

@@ -1,7 +1,10 @@
+import { makeActive } from './utilities.js';
+
 $(document).ready(function() {
 
     // Make current page active in navbar
-    $("#contact").addClass('active');
+    makeActive('#contact')
+    
 
     let form = document.getElementById("contactinfo");
 
