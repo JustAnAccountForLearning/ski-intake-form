@@ -1,10 +1,11 @@
+import { makeActive, toggle, missingField } from './utilities.js';
+
 $(document).ready(function () {
 
     // Make current page active in navbar
-    $("#contact").addClass('active');
+    makeActive("contact");
     
     let form = document.getElementById("searchform");
-    let oldField = "field";
     let message = "No given information. ";
 
     form.onsubmit = function() {
@@ -80,21 +81,4 @@ $(document).ready(function () {
         return false;
     };
 
-
-    // Toggles the alert popup on or off.
-    function toggle(onoff)
-    {
-        var alert = document.getElementById("alert");
-
-        alert.style.display = onoff;
-    }
-
-    // Replaces the "field" in the alert with the appropriate first missing field.
-    function missingField(name)
-    {
-        var alert = document.getElementById("alert").innerHTML;
-        var field = alert.replace(oldField, name);
-        oldField = name;
-        document.getElementById("alert").innerHTML = field;
-    }
 });

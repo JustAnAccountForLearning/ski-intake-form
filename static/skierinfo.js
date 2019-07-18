@@ -1,10 +1,11 @@
+import { makeActive, toggle, missingField } from './utilities.js';
+
 $(document).ready(function() {
 
     // Make current page active in navbar
-    $("#skierinfo").addClass('active');
+    makeActive("#skierinfo");
 
     let form = document.getElementById("skierinfo");
-    let oldField = "field";
 
     // Just to make sure that the boxes are all unchecked upon loading. Don't want to accidentally pick a skier type.
     document.getElementById("type0").checked = false;
@@ -126,22 +127,6 @@ $(document).ready(function() {
             e.preventDefault();
         }
     });
-
-
-    // Toggles the alert popup on of off.
-    function toggle(onoff) {
-        let alert = document.getElementById("alert");
-        alert.style.display = onoff;
-    }
-
-    // Replaces the "field" in the alert with the appropriate first missing field.
-    function missingField(name) {
-        let alert = document.getElementById("alert").innerHTML;
-        let field = alert.replace(oldField, name);
-        oldField = name;
-        document.getElementById("alert").innerHTML = field;
-    }
-
 
 
     // Get the modal

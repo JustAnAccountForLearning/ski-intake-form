@@ -1,26 +1,12 @@
+import { makeActive, toggle, missingField } from './utilities.js';
+
 $(document).ready(function() {
 
     // Make current page active in navbar
-    $("#equipment").addClass('active');
+    makeActive("#equipment");
 
     let form = document.getElementById("equipmentform");
-
-    let oldField = "field";
-
-    // Toggles the alert popup on or off. 'onoff' is a "none" or "block"
-    function toggle(onoff) {
-        var alert = document.getElementById("alert");
-
-        alert.style.display = onoff;
-    }
-
-    // Replaces the "field" in the alert with the appropriate first missing field.
-    function missingField(name) {
-        var alert = document.getElementById("alert").innerHTML;
-        var field = alert.replace(oldField, name);
-        oldField = name;
-        document.getElementById("alert").innerHTML = field;
-    }
+    
 
     form.onsubmit = function() {
         // Requires the very basics of information to identify equipment

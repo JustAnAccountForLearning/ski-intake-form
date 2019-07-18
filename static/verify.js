@@ -1,7 +1,9 @@
+import { makeActive } from './utilities.js';
+
 $(document).ready(function() {
 
     // Make current page active in navbar
-    $("#verify").addClass('active');
+    makeActive("#verify");
 
     let verifybutton = document.getElementById("informationverified");
     let newsubmitbutton = document.getElementById("newsubmitbutton");
